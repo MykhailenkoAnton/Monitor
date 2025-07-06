@@ -52,8 +52,12 @@ jobs:
     # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
 
     - name: Deploy Qt runtime (windeployqt)
+      shell: bash
       run: |
-        windeployqt --qmldir "${{github.workspace}}/gui_monitor_desktop" "${{ env.BUILD_DIR }}"
+        bin_dir="${{ env.BUILD_DIR }}/bin"
+        qmldir_path="${{github.workspace}}/gui_monitor_desktop"
+        echo "Running windeployqt"
+        windeployqt "$bin_dir" --qmldir "$qmldir_path"
 
     - name: Archive Atrifacts
       run: Compress-Archive -Path build/bin/* -DestinationPath artifacts-${{matrix.configuration}}.zip
