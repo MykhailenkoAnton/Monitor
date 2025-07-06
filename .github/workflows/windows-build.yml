@@ -1,0 +1,65 @@
+#--------------------------------------------------------------------------------
+# Workflow configuration
+#--------------------------------------------------------------------------------
+
+name: Desktop Build
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  QT_VERSION: "6.7.3"
+  BUILD_DIR: "${{ github.workspace }}/build"
+
+jobs:
+
+  build-windows:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configuration:
+          - Release
+          - Debug
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with: 
+        arch: x64
+        spectre: true
+    
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        host: windows
+        target: desktop
+        arch: win64_msvc2019_64
+        cache: true
+    
+    - name: Build app
+      run: |
+        mkdir -p ${{ env.BUILD_DIR }}
+        cd ${{ env.BUILD_DIR }}
+        cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
+        cmake --build . --config ${{matrix.configuration}} --parallel
+    # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
+
+    - name: Deploy Qt runtime (windeployqt)
+      run: |
+        windeployqt --qmldir "${{ env.BUILD_DIR }}" "${{github.workspace}}/gui_monitor_desktop"
+
+    - name: Archive Atrifacts
+      run: Compress-Archive -Path build/bin/* -DestinationPath artifacts-${{matrix.configuration}}.zip
+
+    - name: Upload Atrifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: artifacts-${{matrix.configuration}}
+        path: artifacts-${{matrix.configuration}}.zip
