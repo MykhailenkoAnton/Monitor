@@ -63,8 +63,8 @@ jobs:
     # - name: Archive Atrifacts
     #   run: Compress-Archive -Path build/bin/* -DestinationPath artifacts-${{matrix.configuration}}.zip
 
-    - name: Upload Atrifacts
+    - name: Upload Atrifacts ZIP
       uses: actions/upload-artifact@v4
       with:
-        name: artifacts-${{matrix.configuration}}
-        path: artifacts-${{matrix.configuration}}.zip
+        name: ${{matrix.configuration}}-win64
+        path: ${{ env.BUILD_DIR }}/bin
