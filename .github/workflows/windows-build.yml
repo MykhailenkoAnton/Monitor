@@ -47,7 +47,7 @@ jobs:
       run: |
         mkdir -p ${{ env.BUILD_DIR }}
         cd ${{ env.BUILD_DIR }}
-        cmake -B ${{env.BUILD_DIR}} -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
+        cmake .. -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
         cmake --build . --config ${{matrix.configuration}} --parallel
     # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
 
