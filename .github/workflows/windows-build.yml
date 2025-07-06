@@ -12,7 +12,7 @@ on:
 env:
   QT_VERSION: "6.7.3"
   BUILD_DIR: "${{ github.workspace }}/build"
-  TARGET: app_gui_monitor_desktop
+  #TARGET: app_gui_monitor_desktop
 
 jobs:
 
@@ -49,7 +49,7 @@ jobs:
         mkdir -p ${{ env.BUILD_DIR }}
         cd ${{ env.BUILD_DIR }}
         cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=matrix
-        cmake --build . --config ${{matrix.configuration}} --parallel -v --target ${{env.TARGET}}
+        cmake --build . --config ${{matrix.configuration}} --parallel -v
     # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
 
     - name: Deploy Qt runtime (windeployqt)
@@ -60,8 +60,8 @@ jobs:
         echo "Running windeployqt"
         windeployqt "$bin_dir" --qmldir "$qmldir_path"
 
-    - name: Archive Atrifacts
-      run: Compress-Archive -Path build/bin/* -DestinationPath artifacts-${{matrix.configuration}}.zip
+    # - name: Archive Atrifacts
+    #   run: Compress-Archive -Path build/bin/* -DestinationPath artifacts-${{matrix.configuration}}.zip
 
     - name: Upload Atrifacts
       uses: actions/upload-artifact@v4
