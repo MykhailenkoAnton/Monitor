@@ -48,14 +48,14 @@ jobs:
       run: |
         mkdir -p ${{ env.BUILD_DIR }}
         cd ${{ env.BUILD_DIR }}
-        cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
+        cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=matrix
         cmake --build . --config ${{matrix.configuration}} --parallel -v --target ${{env.TARGET}}
     # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
 
     - name: Deploy Qt runtime (windeployqt)
       shell: bash
       run: |
-        bin_dir="${{ env.BUILD_DIR }}/bin"
+        bin_dir="${{ env.BUILD_DIR }}/bin/${{matrix.configuration}}"
         qmldir_path="${{github.workspace}}/gui_monitor_desktop"
         echo "Running windeployqt"
         windeployqt "$bin_dir" --qmldir "$qmldir_path"
