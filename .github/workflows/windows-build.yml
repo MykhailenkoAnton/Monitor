@@ -48,7 +48,7 @@ jobs:
       run: |
         mkdir -p ${{ env.BUILD_DIR }}
         cd ${{ env.BUILD_DIR }}
-        cmake .. -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
+        cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
         cmake --build . --config ${{matrix.configuration}} --parallel -v --target ${{env.TARGET}}
     # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
 
