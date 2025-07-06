@@ -12,6 +12,7 @@ on:
 env:
   QT_VERSION: "6.7.3"
   BUILD_DIR: "${{ github.workspace }}/build"
+  TARGET: gui_monitor_desktop
 
 jobs:
 
@@ -48,7 +49,7 @@ jobs:
         mkdir -p ${{ env.BUILD_DIR }}
         cd ${{ env.BUILD_DIR }}
         cmake .. -DCMAKE_BUILD_TYPE=${{matrix.configuration}} 
-        cmake --build . --config ${{matrix.configuration}} --parallel
+        cmake --build . --config ${{matrix.configuration}} --parallel -v --target ${{env.TARGET}}
     # -DCUSTOM_INSTALL_DIR=${{ env.INSTALL_DIR }}
 
     - name: Deploy Qt runtime (windeployqt)
