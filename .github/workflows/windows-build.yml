@@ -53,7 +53,7 @@ jobs:
 
     - name: Deploy Qt runtime (windeployqt)
       run: |
-        windeployqt --qmldir "${{ env.BUILD_DIR }}" "${{github.workspace}}/gui_monitor_desktop"
+        windeployqt --qmldir "${{github.workspace}}/gui_monitor_desktop" "${{ env.BUILD_DIR }}"
 
     - name: Archive Atrifacts
       run: Compress-Archive -Path build/bin/* -DestinationPath artifacts-${{matrix.configuration}}.zip
