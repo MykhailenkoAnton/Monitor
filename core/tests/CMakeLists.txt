@@ -2,8 +2,7 @@ enable_testing()
 find_package(Qt6 REQUIRED COMPONENTS Test)
 
 set(ITEMS
-    tst_mytest.cpp
-    tst_mytest2.cpp
+    tst_system_info.cpp
 )
 
 foreach(file ${ITEMS})

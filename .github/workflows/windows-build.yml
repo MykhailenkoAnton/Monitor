@@ -56,7 +56,7 @@ jobs:
       shell: bash
       run: |
         bin_dir="${{ env.BUILD_DIR }}/bin/${{matrix.configuration}}"
-        qmldir_path="${{github.workspace}}/gui_monitor_desktop"
+        qmldir_path="${{github.workspace}}/gui_monitor_mobile"
         echo "Running windeployqt"
         windeployqt "$bin_dir" --qmldir "$qmldir_path"
 

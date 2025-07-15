@@ -1,12 +1,12 @@
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlApplicationEngine>
+#include <QtWidgets/QApplication>
+#include "mainwindow.h"
 
 int main(int argc, char* argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-    QQmlApplicationEngine enigne;
-    enigne.loadFromModule("gui_monitor_desktop", "Main");
+    MainWindow window;
+    window.show();
 
     return app.exec();
 }
