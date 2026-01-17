@@ -1,42 +1,59 @@
 #include "mainwindow.h"
 
-#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QGridLayout>
-
-#include "Widgets/system_info_widgets.h"
-#include "Widgets/process_view_wdget.h"
 
 #include <QtCore/QDebug>
 
-#include <QtWidgets/QPushButton>
-
 #include "core/include/system_info/system_info.h"
+
+#include "Widgets/widget_switcher.h"
+
+#include "core/include/workers/cpu_load_worker.h"
+#include "core/include/workers/memory_used_worker.h"
+#include "core/include/workers/processes_worker.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
-    // init manager
-    SystemInfoBase::instance().init();
+    auto& sysInst = core::SystemInfoBase::instance();
+    sysInst.init();
+    _controller = std::make_unique<core::Controller>();
 
     // add widgets
     QWidget* central = new QWidget(parent);
     QGridLayout* grid = new QGridLayout(central);
     central->setLayout(grid);
 
-    // t1
-    ProccesViewWidet* widget1 = new ProccesViewWidet(central);
-    widget1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    // processes list
+    QTableView* tableWidget = new QTableView(central);
+    tableWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    _processesModel = std::make_unique<core::models::ProcessesModel>(sysInst);
+    tableWidget->setModel(_processesModel.get());
+    _controller->addWorker<core::ProcessWorker>();
+    connect(_controller.get(), &core::Controller::updateProcesses, _processesModel.get(),
+        &core::models::ProcessesModel::updateProcessesData, Qt::QueuedConnection);
 
-    // t2
-    DiagramWidget* widget2 = new DiagramWidget(central);
-    widget2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    // cpu and memory view
+    WidgetSwitcher* widgetSwitcher = new WidgetSwitcher(central);
+    widgetSwitcher->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    grid->addWidget(widget1, 0, 0);
-    grid->addWidget(widget2, 0, 1);
+    connect(_controller.get(), &core::Controller::updateCpuData, widgetSwitcher->GetCpuWidget(), &CpuWidget::updateSeries,
+        Qt::QueuedConnection);
+    _controller->addWorker<core::CPULoadWoker>();
+    connect(_controller.get(), &core::Controller::updateMemoryData, widgetSwitcher->GetMemoryWidget(), &MemoryWidget::updateSeries,
+        Qt::QueuedConnection);
+    _controller->addWorker<core::MemoryUseWorker>(500);
+
+    grid->addWidget(tableWidget, 0, 0);
+    grid->addWidget(widgetSwitcher, 0, 1);
 
     grid->setColumnStretch(0, 1);
     grid->setColumnStretch(1, 1);
 
     setCentralWidget(central);
+
+    // starts all workers
+    _controller->startJob();
 }
 
 MainWindow::~MainWindow() {}

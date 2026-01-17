@@ -2,8 +2,6 @@
 
 #include <QtCharts/QAreaSeries>
 
-#include "core/include/system_info/system_info.h"
-
 constexpr int CHAR_X_RANGE_COUNT = 50;
 constexpr int CHAR_X_RANGE_MAX = CHAR_X_RANGE_COUNT - 1;
 
@@ -41,9 +39,9 @@ MemoryWidget::MemoryWidget(QWidget* parent) : SystemInfoWidget(parent), _series(
     chart->axisY()->setRange(minY, maxY);
 }
 
-void MemoryWidget::updateSeries()
+void MemoryWidget::updateSeries(const QVariant& data)
 {
-    const double memoryUsed = SystemInfoBase::instance().memoryUsed();
+    const double memoryUsed = data.value<double>();
     _series->append(_pointPositionX++, memoryUsed);
 
     if (_series->count() > CHAR_X_RANGE_COUNT)

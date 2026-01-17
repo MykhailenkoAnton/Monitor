@@ -3,24 +3,22 @@
 
 #include <QtWidgets/QWidget>
 #include <QtCharts/QChartView>
-#include <QtCore/QTimer>
 
 class SystemInfoWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    SystemInfoWidget(QWidget* parent = nullptr, int startDelayMs = 500, int updateDelayMs = 1000);
+    SystemInfoWidget(QWidget* parent = nullptr);
 
 protected:
     inline QChartView& chartView() { return _chartView; }
 
-protected slots:
+public slots:
 
-    virtual void updateSeries() = 0;
+    virtual void updateSeries(const QVariant& data) = 0;
 
 private:
-    QTimer _refreshTimer;
     QChartView _chartView;
 };
 

@@ -8,8 +8,8 @@
 // macOS header
 #endif
 
-int SystemInfoBase::count_processes = 0;
-
+namespace core
+{
 SystemInfoBase& SystemInfoBase::instance()
 {
 #ifdef Q_OS_WIN
@@ -24,3 +24,4 @@ SystemInfoBase& SystemInfoBase::instance()
 SystemInfoBase::SystemInfoBase() {}
 
 SystemInfoBase::~SystemInfoBase() {}
+}  // namespace core

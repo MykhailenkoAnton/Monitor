@@ -8,6 +8,8 @@
 
 #include <memory>
 
+namespace core
+{
 class SystemInfoWindowsImpl : public SystemInfoBase
 {
 public:
@@ -29,5 +31,6 @@ private:
     class Impl;
     std::unique_ptr<Impl> pImpl;
 };
+}  // namespace core
 
 #endif  // SYSTEM_INFO_WINDOWS_H

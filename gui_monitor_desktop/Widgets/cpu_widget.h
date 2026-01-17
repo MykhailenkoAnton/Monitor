@@ -12,9 +12,9 @@ class CpuWidget : public SystemInfoWidget
 public:
     explicit CpuWidget(QWidget* parent = nullptr);
 
-protected slots:
+public slots:
 
-    virtual void updateSeries() override;
+    virtual void updateSeries(const QVariant& data) override;
 
 private:
     QPieSeries* _series;

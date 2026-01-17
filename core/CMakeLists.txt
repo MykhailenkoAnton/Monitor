@@ -10,19 +10,24 @@ qt_standard_project_setup(REQUIRES 6.7)
 
 set(HEADER_FILES
     include/models/processes_model.h
-    #include/system_info/process_custom.h
-    #include/process_manager.h
     include/system_info/system_info.h
     include/system_info/process_info.h
     include/system_info/windows/system_info_windows.h
+    include/workers/processes_worker.h
+    include/workers/controller.h
+    include/workers/cpu_load_worker.h
+    include/workers/memory_used_worker.h
+    include/workers/worker_base.h
 )
 
 set(SOURCE_FILE
     source/models/processes_model.cpp
-    #source/system_info/process_custom.cpp
-    #source/process_manager.cpp
     source/system_info/system_info.cpp
     source/system_info/windows/system_info_windows.cpp
+    source/workers/processes_worker.cpp
+    source/workers/cpu_load_worker.cpp
+    source/workers/memory_used_worker.cpp
+    source/workers/worker_base.cpp
 )   
 
 qt_add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILE})

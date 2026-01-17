@@ -7,12 +7,12 @@
 
 #include "core/include/system_info/system_info.h"
 #include "core/include/system_info/process_info.h"
+#include "core/include/workers/controller.h"
 
 #include <memory>
 
 namespace core
 {
-
 namespace models
 {
 
@@ -43,6 +43,8 @@ public:
 
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
+    void updateProcessesData(const QVariant& data);
+
 protected:
     QString ProcessDescToString(const ProcessDisplayData value) const;
 
@@ -50,9 +52,8 @@ private:
     bool isValidIndex(const QModelIndex& index) const;
 
 private:
-    std::unique_ptr<QVector<ProcessInfo>> _processesInfo;
+    ProccessesInfoPtr _processesInfo;
 };
-
 }  // namespace models
 }  // namespace core
 

@@ -2,6 +2,8 @@
 
 #include "core/include/system_info/system_info.h"
 
+#include <QDebug>
+
 namespace core
 {
 
@@ -9,7 +11,7 @@ namespace models
 {
 
 ProcessesModel::ProcessesModel(SystemInfoBase& sysInfo, QObject* parent)
-    : QAbstractTableModel(parent), _processesInfo(std::make_unique<QVector<ProcessInfo>>())
+    : QAbstractTableModel(parent), _processesInfo(ProccessesInfoPtr::create())
 {
     SystemInfoBase::instance().GetProcessesInfo(*_processesInfo);
 }
@@ -97,6 +99,18 @@ bool ProcessesModel::isValidIndex(const QModelIndex& index) const
     }
 
     return true;
+}
+
+void ProcessesModel::updateProcessesData(const QVariant& data)
+{
+    if (_processesInfo->size() == data.value<ProccessesInfoPtr>()->size())
+    {
+        return;
+    }
+
+    beginResetModel();
+    _processesInfo = data.value<ProccessesInfoPtr>();
+    endResetModel();
 }
 
 }  // namespace models

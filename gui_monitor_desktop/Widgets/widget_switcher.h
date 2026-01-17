@@ -6,14 +6,15 @@
 #include "cpu_widget.h"
 #include "memory_widget.h"
 
-#include <map>
-
-class DiagramWidget : public QStackedWidget
+class WidgetSwitcher : public QStackedWidget
 {
     Q_OBJECT
 
 public:
-    DiagramWidget(QWidget* parent = nullptr);
+    WidgetSwitcher(QWidget* parent = nullptr);
+
+    CpuWidget* GetCpuWidget() { return &_cpuWidget; }
+    MemoryWidget* GetMemoryWidget() { return &_memoryWidget; }
 
 protected:
     bool event(QEvent* e) override;
@@ -21,9 +22,6 @@ protected:
 signals:
     void onMouseButtonClicked();
     void onMouseEnter();
-
-private:
-    void switchWidget();
 
 private:
     CpuWidget _cpuWidget;

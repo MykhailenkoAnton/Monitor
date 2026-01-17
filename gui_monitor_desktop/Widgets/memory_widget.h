@@ -12,9 +12,9 @@ class MemoryWidget : public SystemInfoWidget
 public:
     explicit MemoryWidget(QWidget* parent = nullptr);
 
-protected slots:
+public slots:
 
-    virtual void updateSeries() override;
+    virtual void updateSeries(const QVariant& data) override;
 
 private:
     QLineSeries* _series;

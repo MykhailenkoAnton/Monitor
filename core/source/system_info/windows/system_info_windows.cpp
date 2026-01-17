@@ -12,6 +12,8 @@
 #include <QtCore/QDebug>
 
 //
+namespace core
+{
 static void printError(TCHAR const* msg)
 {
     TCHAR sysMsg[256];
@@ -124,14 +126,12 @@ public:
                 ProcInfo._processMemoryCount = GetProcessMemoryBytes(&hProcess);  /// 1024;  // just KB now
 
                 processesInfo.push_back(ProcInfo);
-                count_processes++;
             }
 
             CloseHandle(hProcess);
 
         } while (Process32Next(hProcessSnap, &pe32));
 
-        std::cout << "\n\n\n\ncount all processes: " << count_processes << std::endl;
         CloseHandle(hProcessSnap);
 
         return true;
@@ -244,3 +244,4 @@ double SystemInfoWindowsImpl::calculateMemoryUsed(qulonglong ullTotalPhys, qulon
 
     return (double)memoryPhysicalUsed / (double)ullTotalPhys * 100.0;
 }
+}  // namespace core

@@ -12,10 +12,8 @@ qt_add_executable(${APP_NAME}
 
     mainwindow.cpp
     mainwindow.h
-    Widgets/process_view_wdget.h
-    Widgets/process_view_wdget.cpp
-    Widgets/system_info_widgets.h
-    Widgets/system_info_widgets.cpp
+    Widgets/widget_switcher.h
+    Widgets/widget_switcher.cpp
     Widgets/system_info_widget.h
     Widgets/system_info_widget.cpp
     Widgets/cpu_widget.h
