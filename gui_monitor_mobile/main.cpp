@@ -3,6 +3,7 @@
 #include <QtQml/QQmlContext>
 
 #include "core/include/models/processes_model.h"
+#include "core/include/system_info/windows/system_info_windows.h"
 
 int main(int argc, char* argv[])
 {
@@ -10,7 +11,7 @@ int main(int argc, char* argv[])
 
     QQmlApplicationEngine engine;
 
-    core::models::ProcessesModel processesModel;
+    core::models::ProcessesModel processesModel(core::SystemInfoBase::instance());
     engine.rootContext()->setContextProperty(QString("ProcessesModel"), &processesModel);
 
     QObject::connect(

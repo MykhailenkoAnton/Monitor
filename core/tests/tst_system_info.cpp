@@ -6,17 +6,17 @@
 
 #include "core/include/system_info/windows/system_info_windows.h"
 
-class FakeSystem : public SystemInfoWindowsImpl
+class FakeSystem : public core::SystemInfoWindowsImpl
 {
 public:
     double calculateCpuLoadAverage(const QVector<qulonglong>& firstSample, const QVector<qulonglong>& secondSample)
     {
-        return SystemInfoWindowsImpl::calculateCpuLoadAverage(firstSample, secondSample);
+        return core::SystemInfoWindowsImpl::calculateCpuLoadAverage(firstSample, secondSample);
     }
 
     double calculateMemoryUsed(qulonglong allMemoryPhys, qulonglong allMemoryAvail)
     {
-        return SystemInfoWindowsImpl::calculateMemoryUsed(allMemoryPhys, allMemoryAvail);
+        return core::SystemInfoWindowsImpl::calculateMemoryUsed(allMemoryPhys, allMemoryAvail);
     }
 };
 
@@ -34,10 +34,10 @@ private slots:
 
 void TestSystemInfo::GetProcessesInfoTest()
 {
-    SystemInfoBase::instance().init();
+    core::SystemInfoBase::instance().init();
 
-    QVector<ProcessInfo> processesInfo;
-    SystemInfoBase::instance().GetProcessesInfo(processesInfo);
+    QVector<core::ProcessInfo> processesInfo;
+    core::SystemInfoBase::instance().GetProcessesInfo(processesInfo);
     QVERIFY(processesInfo.size() != 0);
 
     for (int i = 0; i < processesInfo.size(); i++)
@@ -50,15 +50,15 @@ void TestSystemInfo::GetProcessesInfoTest()
 
 void TestSystemInfo::GetMemoryUsed()
 {
-    SystemInfoBase::instance().init();
-    const double memory = SystemInfoBase::instance().memoryUsed();
+    core::SystemInfoBase::instance().init();
+    const double memory = core::SystemInfoBase::instance().memoryUsed();
     QVERIFY(memory >= 0.0 && memory <= 100.0);
 }
 
 void TestSystemInfo::GetCPUAvarage()
 {
-    SystemInfoBase::instance().init();
-    const double cpu = SystemInfoBase::instance().cpuLoadAverage();
+    core::SystemInfoBase::instance().init();
+    const double cpu = core::SystemInfoBase::instance().cpuLoadAverage();
     QVERIFY(cpu >= 0.0 && cpu <= 100.0);
 }
 
